@@ -27,11 +27,11 @@
         "controlChanges": {},
         "pitchBends": [],
         "instrument": {
-          "family": "chromatic percussion",
+          "family": "piano",
           "number": 11,
-          "name": "vibraphone"
+          "name": "acoustic grand piano"
         },
-        "name": "Vibraphone",
+        "name": "Acoustic grand piano",
         "notes": [
           {
             "duration": 0.545454,
