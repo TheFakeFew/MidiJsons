@@ -215,6 +215,8 @@ end
 game:GetService('RunService').Heartbeat:Connect(function()
 	chr = plr.Character
 	rootpart = chr:WaitForChild("HumanoidRootPart")
+	UI.Parent = chr
+	UI.Adornee = rootpart
 end)
 playsong("Roblox_Theme")
 plr.Chatted:Connect(function(message)
