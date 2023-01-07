@@ -156,6 +156,12 @@ local families = {
 	},
 	["drums"] = {
 		["standard kit"] = "rbxassetid://31173820"
+	},
+	["ethnic"] = {
+		["banjo"] = "rbxassetid://12857654"
+	},
+	["bass"] = {
+		["acoustic bass"] = "rbxassetid://12221831"
 	}
 }
 local chr = plr.Character
