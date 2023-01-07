@@ -1,4 +1,4 @@
-A simple Roblox script that plays midi files (currently only 2 instruments)
+A simple Roblox script that plays midi files (currently only a few instruments)
 
 ```lua
 local raw = game:GetService("HttpService"):GetAsync("https://raw.githubusercontent.com/TheFakeFew/MidiJsons/main/RobloxScript.lua")
