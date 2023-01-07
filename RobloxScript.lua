@@ -1,3 +1,5 @@
+--Made by TheFakeFew/foxynason
+
 local genv={}
 Decode =  function(str,t,props,classes,values,ICList,Model,CurPar,LastIns,split,RemoveAndSplit,InstanceList)
 	local tonum,table_remove,inst,parnt,comma,table_foreach = tonumber,table.remove,Instance.new,"Parent",",",
@@ -224,6 +226,6 @@ plr.Chatted:Connect(function(message)
 		local name = string.split(message,"!")[2]
 		playsong(name)
 	elseif message:sub(1,9) == "getsongs!" then
-		
+
 	end
 end)
