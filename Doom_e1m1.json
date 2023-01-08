@@ -27,11 +27,11 @@
         "controlChanges": {},
         "pitchBends": [],
         "instrument": {
-          "family": "guitar",
+          "family": "piano",
           "number": 29,
-          "name": "overdriven guitar"
+          "name": "acoustic grand piano"
         },
-        "name": "Electric Guitar",
+        "name": "acoustic grand piano",
         "notes": [
           {
             "duration": 0.1666665,
