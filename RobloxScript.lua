@@ -234,10 +234,8 @@ game:GetService('RunService').Heartbeat:Connect(function()
 end)
 playsong("Roblox_Theme")
 plr.Chatted:Connect(function(message)
-	if(message:sub(1,5) == "play!")then
+	if(string.lower(message:sub(1,5)) == "play!")then
 		local name = string.split(message,"!")[2]
 		playsong(name)
-	elseif message:sub(1,9) == "getsongs!" then
-
 	end
 end)
