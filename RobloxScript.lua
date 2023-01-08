@@ -299,6 +299,7 @@ UI.StudsOffset = Vector3.new(0,3.5,0)
 UI.AlwaysOnTop = false
 local textlb = UI.TextBox
 local songs = {}
+local volmult = 1
 function playsong(songname)
 	coroutine.wrap(function()
 		for i,v in next, songs do
@@ -334,7 +335,7 @@ function playsong(songname)
 					textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..2^((v.midi-69)/12)
 					local settings = id.settings
 					local snd = Instance.new("Sound",rootpart)
-					snd.Volume = v.velocity
+					snd.Volume = v.velocity*volmult
 					if(settings and settings["Gain"])then
 						snd.Volume += settings["Gain"]
 					end
@@ -366,8 +367,10 @@ end
 game:GetService('RunService').Heartbeat:Connect(function()
 	chr = plr.Character
 	rootpart = chr:WaitForChild("HumanoidRootPart")
-	UI.Parent = chr
-	UI.Adornee = rootpart
+	pcall(function()
+		UI.Parent = chr
+		UI.Adornee = rootpart
+	end)
 end)
 
 playsong("Roblox_Theme")
@@ -375,5 +378,7 @@ plr.Chatted:Connect(function(message)
 	if(string.lower(message:sub(1,5)) == "play!")then
 		local name = string.split(message,"!")[2]
 		playsong(name)
+	elseif(string.lower(message:sub(1,4)) == "vol!")then
+		volmult = tonumber(string.split(message,"!")[2]) or 1
 	end
 end)
