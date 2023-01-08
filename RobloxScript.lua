@@ -149,36 +149,32 @@ local plr = owner
 if(not getfenv().owner)then
 	plr = script.Parent:IsA("PlayerGui") and script.Parent.Parent or game:GetService('Players'):GetPlayerFromCharacter(script.Parent)
 end
+
 local families = {
-	["piano"] = {
-		["acoustic grand piano"] = {
-			id = "rbxassetid://5924276201",
-			min = 0,
-			max = 9999
-		}
-	},
-	["drums"] = {
-		["standard kit"] = {
-			id = "rbxassetid://31173820",
-			min = 0.5,
-			max = 9999
-		}
-	},
-	["ethnic"] = {
-		["banjo"] = {
-			id = "rbxassetid://12857654",
-			min = 0,
-			max = 9999
-		}
-	},
-	["bass"] = {
-		["acoustic bass"] = {
-			id = "rbxassetid://12221831",
-			min = 0,
-			max = 9999
-		}
-	}
+	["standard kit"] = {"rbxassetid://31173820", settings = {["Gain"] = 0.1}},
+	["acoustic grand piano"] = {"rbxassetid://5924276201", settings = {["Gain"] = 0, ["Offset"] = -7}},
+	["bright acoustic piano"] = {"rbxassetid://5924276201", settings = {["Gain"] = 0, ["Offset"] = -7}},
+	["electric grand piano"] = {"rbxassetid://5924276201", settings = {["Gain"] = 0, ["Offset"] = -7}},
+	["electric piano 1"] = {"rbxassetid://5924276201", settings = {["Gain"] = 0, ["Offset"] = -7}},
+	["electric piano 2"] = {"rbxassetid://5924276201", settings = {["Gain"] = 0, ["Offset"] = -7}},
+	["harpsichord"] = {"rbxassetid://109618842", settings = {["Offset"] = -12}},
+	["lead 1 (square)"] = {"rbxassetid://9040512330", settings = {["Gain"] = -0.2, ["Loop"] = true, ["Offset"] = 3}},
+	["lead 2 (sawtooth)"] = {"rbxassetid://9040512075", settings = {["Gain"] = -0.2, ["Loop"] = true, ["Offset"] = 3}},
+	["lead 3 (calliope)"] = {"rbxassetid://9040512197", settings = {["Gain"] = -0.2, ["Loop"] = true, ["Offset"] = 3}},
+	["lead 4 (chiff)"] = {"rbxasset://Sounds/bass.wav"},
+	["lead 5 (charang)"] = {"rbxasset://Sounds/bass.wav"},
+	["lead 6 (voice)"] = {"rbxasset://Sounds/bass.wav"},
+	["lead 7 (fifths)"] = {"rbxasset://Sounds/bass.wav"},
+	["lead 8 (bass + lead)"] = {"rbxassetid://9085536418", settings = {["Gain"] = -0.2, ["Loop"] = true, ["Offset"] = 3}},
+	["sitar"] = {"rbxassetid://12857654"},
+	["banjo"] = {"rbxassetid://12857654"},
+	["shamisen"] = {"rbxasset://Sounds/electronicpingshort.wav"},
+	["koto"] = {"rbxassetid://12857654"},
+	["kalimba"] = {"rbxassetid://13414758"},
+	["bag pipe"] = {"rbxasset://Sounds/electronicpingshort.wav"},
+	["fiddle"] = {"rbxassetid://12857654"}
 }
+
 local chr = plr.Character
 local rootpart = chr:WaitForChild("HumanoidRootPart")
 UI.Parent = chr
@@ -209,22 +205,31 @@ function playsong(songname)
 		textlb.Text = notenum.."/"..numofnotes
 		for i,v in next, tracks do
 			local id = "rbxassetid://0"
-			print(v.instrument.family,v.instrument.name)
-			if(families[v.instrument.family] and families[v.instrument.family][v.instrument.name])then
-				id = families[v.instrument.family][v.instrument.name]
+			print(v.instrument.name)
+			if(families[v.instrument.name])then
+				id = families[v.instrument.name]
 			else
-				id = families.piano["acoustic grand piano"]
+				id = families["acoustic grand piano"]
 			end
 			for i,v in next, v.notes do
 				local thread
 				thread = task.delay(v.time,function()
 					notenum = notenum + 1
 					textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..2^((v.midi-69)/12)
+					local settings = id.settings
 					local snd = Instance.new("Sound",rootpart)
 					snd.Volume = v.velocity
-					snd.SoundId = id.id
-					snd.Looped = true
-					snd.Pitch = math.clamp(2^((v.midi-69)/12),id.min,id.max)
+					if(settings and settings["Gain"])then
+						snd.Volume += settings["Gain"]
+					end
+					snd.SoundId = id[1]
+					if(settings and settings["Loop"])then
+						snd.Looped = settings["Loop"]
+					end
+					if(settings and settings["Offset"])then
+						v.midi += settings["Offset"]
+					end
+					snd.Pitch = 2^((v.midi-69)/12)
 					snd.Name = v.name
 					snd:Play()
 					task.delay(v.duration,function()
