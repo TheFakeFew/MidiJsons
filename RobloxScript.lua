@@ -348,7 +348,14 @@ function playsong(songname)
 					snd.Pitch = 2^((v.midi-69)/12)
 					snd.Name = v.name
 					snd:Play()
-					task.delay(v.duration,snd.Destroy,snd)
+					task.delay(v.duration,function()
+						local tw = game:GetService("TweenService"):Create(snd,TweenInfo.new(.1),{
+							Volume = 0
+						})
+						tw:Play()
+						tw.Completed:Wait()
+						snd:Destroy()
+					end)
 				end)
 				table.insert(songs,thread)
 			end
