@@ -151,17 +151,32 @@ if(not getfenv().owner)then
 end
 local families = {
 	["piano"] = {
-		["acoustic grand piano"] = "rbxassetid://5924276201",
-		["standard"] = "rbxassetid://5924276201"
+		["acoustic grand piano"] = {
+			id = "rbxassetid://5924276201",
+			min = 0,
+			max = 9999
+		}
 	},
 	["drums"] = {
-		["standard kit"] = "rbxassetid://31173820"
+		["standard kit"] = {
+			id = "rbxassetid://31173820",
+			min = 0.5,
+			max = 9999
+		}
 	},
 	["ethnic"] = {
-		["banjo"] = "rbxassetid://12857654"
+		["banjo"] = {
+			id = "rbxassetid://12857654",
+			min = 0,
+			max = 9999
+		}
 	},
 	["bass"] = {
-		["acoustic bass"] = "rbxassetid://12221831"
+		["acoustic bass"] = {
+			id = "rbxassetid://12221831",
+			min = 0,
+			max = 9999
+		}
 	}
 }
 local chr = plr.Character
@@ -198,7 +213,7 @@ function playsong(songname)
 			if(families[v.instrument.family] and families[v.instrument.family][v.instrument.name])then
 				id = families[v.instrument.family][v.instrument.name]
 			else
-				id = families.piano.standard
+				id = families.piano["acoustic grand piano"]
 			end
 			for i,v in next, v.notes do
 				local thread
@@ -207,9 +222,9 @@ function playsong(songname)
 					textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..2^((v.midi-69)/12)
 					local snd = Instance.new("Sound",rootpart)
 					snd.Volume = v.velocity
-					snd.SoundId = id
+					snd.SoundId = id.id
 					snd.Looped = true
-					snd.Pitch = 2^((v.midi-69)/12)
+					snd.Pitch = math.clamp(2^((v.midi-69)/12),id.min,id.max)
 					snd.Name = v.name
 					snd:Play()
 					task.delay(v.duration,function()
