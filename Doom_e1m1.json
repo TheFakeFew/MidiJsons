@@ -12353,11 +12353,11 @@
         "controlChanges": {},
         "pitchBends": [],
         "instrument": {
-          "family": "bass",
+          "family": "piano",
           "number": 32,
-          "name": "acoustic bass"
+          "name": "acoustic grand piano"
         },
-        "name": "Bass (Classic)",
+        "name": "acoustic grand piano",
         "notes": [
           {
             "duration": 0.1666665,
