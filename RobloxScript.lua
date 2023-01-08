@@ -185,7 +185,6 @@ function playsong(songname)
 			print("Song doesnt exist.")
 		end
 		print("loaded "..songname)
-		local bpm = 60/data.header.tempos[1].bpm
 		local tracks = data.tracks
 		local notenum = 0
 		local numofnotes = 0
