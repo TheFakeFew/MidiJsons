@@ -291,6 +291,10 @@ for i,v in next, instruments do
 	families[v[2]] = {v[1],settings = v.settings or {}}
 end
 
+function notetopitch(note, offset)
+	return (440 / 32) * math.pow(2, ((note + offset) / 12)) / 440
+end
+
 local chr = plr.Character
 local rootpart = chr:WaitForChild("HumanoidRootPart")
 UI.Parent = chr
@@ -344,9 +348,10 @@ function playsong(songname)
 						snd.Looped = settings["Loop"]
 					end
 					if(settings and settings["Offset"])then
-						v.midi += settings["Offset"]
+						snd.Pitch = notetopitch(v.midi,settings["Offset"]) --2^((v.midi-69)/12)
+					else
+						snd.Pitch = notetopitch(v.midi,0)
 					end
-					snd.Pitch = 2^((v.midi-69)/12)
 					snd.Name = v.name
 					snd:Play()
 					task.delay(v.duration,function()
