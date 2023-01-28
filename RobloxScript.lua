@@ -199,13 +199,13 @@ function playsong(songname)
 		end
 		print("loaded "..songname)
 		local tracks = data.tracks
-		local notenum = 0
-		local numofnotes = 0
-		for i,v in next, tracks do
-			numofnotes = numofnotes + #v.notes
-		end
-		textlb.Text = notenum.."/"..numofnotes
 		local function play()
+			local notenum = 0
+			local numofnotes = 0
+			for i,v in next, tracks do
+				numofnotes = numofnotes + #v.notes
+			end
+			textlb.Text = notenum.."/"..numofnotes
 			for i,v in next, tracks do
 				local id = {}
 				print(v.instrument.name)
