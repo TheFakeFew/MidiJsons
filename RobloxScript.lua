@@ -205,15 +205,6 @@ function playsong(songname)
 			numofnotes = numofnotes + #v.notes
 		end
 		textlb.Text = notenum.."/"..numofnotes
-		local endofsongtime = 0
-		for i,v in next, tracks do
-			for i,v in next, v.notes do
-				if((v.time+v.duration) > endofsongtime)then
-					endofsongtime = v.time+v.duration
-				end
-			end
-		end
-		print(endofsongtime)
 		local function play()
 			for i,v in next, tracks do
 				local id = {}
@@ -260,12 +251,21 @@ function playsong(songname)
 					table.insert(songs,thread)
 				end
 			end
+			local function onend()
+				if(looping)then play()end
+			end
+			local endofsongtime = 0
+			for i,v in next, tracks do
+				for i,v in next, v.notes do
+					if((v.time+v.duration) > endofsongtime)then
+						endofsongtime = v.time+v.duration
+					end
+				end
+			end
+			print(endofsongtime)
+			local thread = task.delay(endofsongtime,onend)
+			table.insert(songs,thread)
 		end
-		function onend()
-			if(looping)then play()end
-		end
-		local thread = task.delay(endofsongtime,onend)
-		table.insert(songs,thread)
 		play()
 	end)()
 end
