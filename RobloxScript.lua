@@ -161,6 +161,9 @@ local instrumentsfallback = {
 	{"rbxassetid://5924276201", "acoustic grand piano", settings = {["Gain"] = 0, ["Offset"] = -7}}
 }
 local instruments = getInstruments()
+if(not instruments or instruments == {})then
+	instruments = instrumentsfallback
+end
 
 local families = {}
 
