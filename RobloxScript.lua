@@ -327,8 +327,8 @@ function playsong(songname)
 		local endofsongtime = 0
 		for i,v in next, tracks do
 			for i,v in next, v.notes do
-				if(v.time > endofsongtime)then
-					endofsongtime = v.time
+				if((v.time+v.duration) > endofsongtime)then
+					endofsongtime = v.time+v.duration
 				end
 			end
 		end
