@@ -211,7 +211,7 @@ function playsong(songname)
 		end
 		print(endofsongtime)
 		for i,v in next, tracks do
-			local id = "rbxassetid://0"
+			local id = {}
 			print(v.instrument.name)
 			if(families[v.instrument.name])then
 				id = families[v.instrument.name]
