@@ -151,7 +151,7 @@ if(not getfenv().owner)then
 end
 
 function getInstruments()
-    local data = game:GetService('HttpService'):GetAsync("https://github.com/OrangeCash090/MIDI-Player-Roblox/blob/main/Instruments.lua")
+    local data = game:GetService('HttpService'):GetAsync("https://raw.githubusercontent.com/OrangeCash090/MIDI-Player-Roblox/main/Instruments.lua")
     local DATA = loadstring(data or "")()
     return DATA or nil
 end
