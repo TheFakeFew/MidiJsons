@@ -195,7 +195,7 @@ function playsong(songname)
 		local data = getData(songname)
 		if(not data)then
 			textlb.Text = "Song doesnt exist."
-			print("Song doesnt exist.")
+			return print("Song doesnt exist.")
 		end
 		print("loaded "..songname)
 		local tracks = data.tracks
