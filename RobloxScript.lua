@@ -184,6 +184,7 @@ UI.AlwaysOnTop = false
 local textlb = UI.TextBox
 local songs = {}
 local volmult = 1
+local looping = true
 function playsong(songname)
 	coroutine.wrap(function()
 		for i,v in next, songs do
@@ -213,51 +214,59 @@ function playsong(songname)
 			end
 		end
 		print(endofsongtime)
-		for i,v in next, tracks do
-			local id = {}
-			print(v.instrument.name)
-			if(families[v.instrument.name])then
-				id = families[v.instrument.name]
-			else
-				id = families["acoustic grand piano"]
-			end
-			for i,v in next, v.notes do
-				local thread
-				thread = task.delay(v.time,function()
-					notenum = notenum + 1
-					textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..2^((v.midi-69)/12)
-					local settings = id.settings
-					local snd = Instance.new("Sound",rootpart)
-					snd.Volume = v.velocity*volmult
-					if(settings and settings["Gain"])then
-						snd.Volume += settings["Gain"]
-					end
-					snd.SoundId = id[1]
-					if(id.pitches and id.pitches[v.midi])then
-						snd.SoundId = id.pitches[v.midi]
-					end
-					if(settings and settings["Loop"])then
-						snd.Looped = settings["Loop"]
-					end
-					if(settings and settings["Offset"])then
-						snd.Pitch = notetopitch(v.midi,settings["Offset"]) --2^((v.midi-69)/12)
-					else
-						snd.Pitch = notetopitch(v.midi,0)
-					end
-					snd.Name = v.name
-					snd:Play()
-					task.delay(v.duration,function()
-						local tw = game:GetService("TweenService"):Create(snd,TweenInfo.new(.1),{
-							Volume = 0
-						})
-						tw:Play()
-						tw.Completed:Wait()
-						snd:Destroy()
+		local function play()
+			for i,v in next, tracks do
+				local id = {}
+				print(v.instrument.name)
+				if(families[v.instrument.name])then
+					id = families[v.instrument.name]
+				else
+					id = families["acoustic grand piano"]
+				end
+				for i,v in next, v.notes do
+					local thread
+					thread = task.delay(v.time,function()
+						notenum = notenum + 1
+						textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..snd.Pitch = notetopitch(v.midi,settings["Offset"] or 0))
+						local settings = id.settings
+						local snd = Instance.new("Sound",rootpart)
+						snd.Volume = v.velocity*volmult
+						if(settings and settings["Gain"])then
+							snd.Volume += settings["Gain"]
+						end
+						snd.SoundId = id[1]
+						if(id.pitches and id.pitches[v.midi])then
+							snd.SoundId = id.pitches[v.midi]
+						end
+						if(settings and settings["Loop"])then
+							snd.Looped = settings["Loop"]
+						end
+						if(settings and settings["Offset"])then
+							snd.Pitch = notetopitch(v.midi,settings["Offset"]) --2^((v.midi-69)/12)
+						else
+							snd.Pitch = notetopitch(v.midi,0)
+						end
+						snd.Name = v.name
+						snd:Play()
+						task.delay(v.duration,function()
+							local tw = game:GetService("TweenService"):Create(snd,TweenInfo.new(.1),{
+								Volume = 0
+							})
+							tw:Play()
+							tw.Completed:Wait()
+							snd:Destroy()
+						end)
 					end)
-				end)
-				table.insert(songs,thread)
+					table.insert(songs,thread)
+				end
 			end
 		end
+		function onend()
+			if(looping)then play()end
+		end
+		local thread = task.delay(v.time,onend)
+		table.insert(songs,thread)
+		play()
 	end)()
 end
 
@@ -277,5 +286,8 @@ plr.Chatted:Connect(function(message)
 		playsong(name)
 	elseif(string.lower(message:sub(1,4)) == "vol!")then
 		volmult = tonumber(string.split(message,"!")[2]) or 1
+	elseif(string.lower(message:sub(1,5)) == "loop!")then
+		looping = not looping
+		print(tostring(looping))
 	end
 end)
