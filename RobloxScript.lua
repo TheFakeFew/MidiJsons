@@ -184,7 +184,7 @@ UI.AlwaysOnTop = false
 local textlb = UI.TextBox
 local songs = {}
 local volmult = 1
-local looping = true
+local looping = false
 function playsong(songname)
 	coroutine.wrap(function()
 		for i,v in next, songs do
