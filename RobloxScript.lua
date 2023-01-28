@@ -264,7 +264,7 @@ function playsong(songname)
 		function onend()
 			if(looping)then play()end
 		end
-		local thread = task.delay(v.time,onend)
+		local thread = task.delay(endofsongtime,onend)
 		table.insert(songs,thread)
 		play()
 	end)()
