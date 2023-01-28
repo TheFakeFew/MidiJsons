@@ -324,6 +324,15 @@ function playsong(songname)
 			numofnotes = numofnotes + #v.notes
 		end
 		textlb.Text = notenum.."/"..numofnotes
+		local endofsongtime = 0
+		for i,v in next, tracks do
+			for i,v in next, v.notes do
+				if(v.time > endofsongtime)then
+					endofsongtime = v.time
+				end
+			end
+		end
+		print(endofsongtime)
 		for i,v in next, tracks do
 			local id = "rbxassetid://0"
 			print(v.instrument.name)
