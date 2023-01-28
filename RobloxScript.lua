@@ -227,7 +227,7 @@ function playsong(songname)
 					local thread
 					thread = task.delay(v.time,function()
 						notenum = notenum + 1
-						textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..notetopitch(v.midi,settings["Offset"] or 0))
+						textlb.Text = notenum.."/"..numofnotes.."\n"..v.time.."\n"..notetopitch(v.midi,id.settings["Offset"] or 0))
 						local settings = id.settings
 						local snd = Instance.new("Sound",rootpart)
 						snd.Volume = v.velocity*volmult
